@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>文件列表</title>
+    <style>
+        .file,.dir {
+            list-style: none;
+            font-size: 22px;
+            cursor: pointer;
+            text-decoration: underline;
+            height: 40px;
+        }
+
+        .file{
+            color: blue;
+        }
+
+        .dir{
+            color: chartreuse;
+        }
+    </style>
+    <script src="front/jq/jquery.min.js"></script>
+</head>
+
+<body>
+    <div>
+        <ul id="fslist">
+        </ul>
+    </div>
+</body>
+
+</html>
+<script>
+    var [appURL, appPort, path] = ["http://127.0.0.1", "8080", "."]
+    $(function () {
+        getFSList(path)
+
+        $("#fslist").on("click",".file",function(){
+            downLoadFile($(this).data("path"),$(this).text())
+        })
+
+        $("#fslist").on("click",".dir",function(){
+            $("#fslist").html('')
+            getFSList($(this).data("path"))
+        })
+
+    })
+
+    function getFSList(fspath) {
+        $.ajax({
+            url: appURL + ":" + appPort + "/fslist",
+            type: "POST",
+            dataType: "JSON",
+            data: { path: fspath },
+            success: data => {
+                let liHTML = "",cls = ""
+                $(data).each((idx, obj) => {
+                    cls = obj.isFile?"file":"dir";
+                    liHTML += "<li class='"+cls+"' data-path='" + obj.path + "'>" + obj.name + "</li>"
+                })
+                $("#fslist").append(liHTML);
+            }
+        })
+    }
+
+    function downLoadFile(filePath,fileName){
+        window.location.href = appURL + ":" + appPort + "/download?path="+filePath+"&name="+fileName
+    }
+</script>

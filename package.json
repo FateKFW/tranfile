@@ -1,0 +1,15 @@
+{
+  "name": "tranfile",
+  "version": "1.0.0",
+  "description": "内网文件传输",
+  "main": "app.js",
+  "scripts": {
+    "dev": "node app.js",
+    "fast": "node app.js -p 8080 -a ."
+  },
+  "author": "RDZ",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
