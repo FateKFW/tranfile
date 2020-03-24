@@ -35,8 +35,9 @@
 
 </html>
 <script>
-    var [appURL, appPort, path] = ["http://127.0.0.1", "8080", "."]
+    var path = "."
     $(function () {
+
         getFSList(path)
 
         $("#fslist").on("click",".file",function(){
@@ -52,7 +53,7 @@
 
     function getFSList(fspath) {
         $.ajax({
-            url: appURL + ":" + appPort + "/fslist",
+            url: window.location.href + "fslist",
             type: "POST",
             dataType: "JSON",
             data: { path: fspath },
@@ -68,6 +69,6 @@
     }
 
     function downLoadFile(filePath,fileName){
-        window.location.href = appURL + ":" + appPort + "/download?path="+filePath+"&name="+fileName
+        window.location.href = window.location.href + "download?path="+filePath+"&name="+fileName
     }
 </script>
